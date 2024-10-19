@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - "3000:3000"
+  product-catalog-service:
+    build: ./product-catalog-service
+    ports:
+      - "3001:3001"
+  shopping-cart-service:
+    build: ./shopping-cart-service
+    ports:
+      - "3002:3002"
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "3004:3004"
+  order-service:
+    build: ./order-service
+    ports:
+      - "3003:3003"
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "3005:3005"
+
