@@ -1,27 +1,58 @@
 version: '3.8'
 services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
   user-service:
     build: ./user-service
     ports:
       - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/userService
+    depends_on:
+      - mongo
   product-catalog-service:
     build: ./product-catalog-service
     ports:
       - "3001:3001"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/productCatalog
+    depends_on:
+      - mongo 
   shopping-cart-service:
     build: ./shopping-cart-service
     ports:
       - "3002:3002"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/shoppingCart
+    depends_on:
+      - mongo
   payment-service:
     build: ./payment-service
     ports:
       - "3004:3004"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/paymentService
+    depends_on:
+      - mongo
   order-service:
     build: ./order-service
     ports:
       - "3003:3003"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/orderService
+    depends_on:
+      - mongo
   notification-service:
     build: ./notification-service
     ports:
       - "3005:3005"
-
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/notificationService
+    depends_on:
+      - mongo
+volumes:
+  mongo-data:
