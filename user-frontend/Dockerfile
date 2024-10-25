@@ -23,4 +23,5 @@ RUN npm install -g serve
 ENV PORT 3010
 
 # Run serve when the container launches
-CMD ["serve", "-s", "build", "-l", "3010"]
+CMD ["serve", "-s", "build", "-l", "3010", "--single"]
+

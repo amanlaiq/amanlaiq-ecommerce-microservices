@@ -18,8 +18,8 @@ services:
     build: ./user-frontend
     ports:
       - "3006:3010"
-    volumes:
-      - ./user-frontend:/app
+    # volumes:
+    #   - ./user-frontend:/app
     environment:
       - REACT_APP_BACKEND_URL=http://localhost:3000
   product-catalog-service:
