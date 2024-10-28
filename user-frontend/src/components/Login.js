@@ -1,45 +1,60 @@
 import React, { useState } from 'react';
-import API from '../services/api'; // Assuming your API setup is in the services folder
+import API from '../services/api'; // Ensure this path is correct based on your project structure
 
 function Login() {
-    const [credentials, setCredentials] = useState({ email: '', password: '' });
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setCredentials(prev => ({ ...prev, [name]: value }));
-    };
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(''); // State to hold error messages
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!email || !password) {
+            setError('Both email and password are required');
+            return;
+        }
         try {
-            const response = await API.post('/users/login', credentials);
-            localStorage.setItem('token', response.data.token); // Save the token
-            console.log('Login successful:', response.data);
-            // Redirect or manage the login state
+            const response = await API.post('/users/login', { email, password });
+            localStorage.setItem('token', response.data.token); // Store the token in localStorage
+            setError(''); // Clear any errors
+            console.log('Login successful:', response.data); // Optional: Redirect or update UI
         } catch (error) {
-            console.error('Login failed:', error.response.data);
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error('Failed to login:', error.response.data);
+                setError(error.response.data.message || 'Failed to login');
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error('No response:', error.request);
+                setError('No response from server');
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.error('Error:', error.message);
+                setError('Error during request setup');
+            }
         }
     };
 
     return (
-        <div>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
+        <div className="container">
+            <form onSubmit={handleSubmit} className="form">
+                <h2 className="title">Login</h2>
+                {error && <p className="error">{error}</p>} {/* Display error message */}
                 <input
                     type="email"
-                    name="email"
-                    value={credentials.email}
-                    onChange={handleChange}
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                     placeholder="Email"
+                    className="input"
                 />
                 <input
                     type="password"
-                    name="password"
-                    value={credentials.password}
-                    onChange={handleChange}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                     placeholder="Password"
+                    className="input"
                 />
-                <button type="submit">Login</button>
+                <button type="submit" className="button">Login</button>
             </form>
         </div>
     );

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import API from '../services/api'; // Adjust the import path as needed
+import '../styles/Register.css'; // Adjust the path based on your project structure
+
 
 function Register() {
     const [user, setUser] = useState({ name: '', email: '', password: '' });
@@ -11,25 +13,20 @@ function Register() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            const response = await API.post('/users/register', user);
-            console.log('Registration successful:', response.data);
-            // Redirect or handle next steps
-        } catch (error) {
-            console.error('Registration failed:', error.response.data);
-        }
+        // Insert registration logic here
     };
 
     return (
-        <div>
-            <h1>Register</h1>
-            <form onSubmit={handleSubmit}>
+        <div className="container">
+            <form onSubmit={handleSubmit} className="form">
+                <h2 className="title">Register</h2>
                 <input
                     type="text"
                     name="name"
                     value={user.name}
                     onChange={handleChange}
                     placeholder="Full Name"
+                    className="input"
                 />
                 <input
                     type="email"
@@ -37,6 +34,7 @@ function Register() {
                     value={user.email}
                     onChange={handleChange}
                     placeholder="Email"
+                    className="input"
                 />
                 <input
                     type="password"
@@ -44,8 +42,9 @@ function Register() {
                     value={user.password}
                     onChange={handleChange}
                     placeholder="Password"
+                    className="input"
                 />
-                <button type="submit">Register</button>
+                <button type="submit" className="button">Register</button>
             </form>
         </div>
     );
